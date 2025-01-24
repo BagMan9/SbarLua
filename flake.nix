@@ -25,12 +25,11 @@
 
           src = self;
 
-          # buildInputs = with pkgs; [
-          #   lua5_4
-          # ];
+          propagatedBuildInputs = with pkgs; [
+            lua5_4
+          ];
 
           buildInputs = with pkgs; [
-            # pkg-config
             darwin.apple_sdk.frameworks.CoreFoundation
           ];
 
