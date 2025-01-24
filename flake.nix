@@ -19,18 +19,18 @@
         arch = if system == "aarch64-darwin" then "arm64" else "x86_64";
       in
       {
-        packages.default = pkgs.stdenv.mkDerivation {
+        packages.default = pkgs.lua54Packages.buildLuaPackage {
           pname = "sketchybar-lua";
           version = "0.1.0";
 
           src = self;
 
-          buildInputs = with pkgs; [
-            lua5_4
-          ];
+          # buildInputs = with pkgs; [
+          #   lua5_4
+          # ];
 
-          nativeBuildInputs = with pkgs; [
-            pkg-config
+          buildInputs = with pkgs; [
+            # pkg-config
             darwin.apple_sdk.frameworks.CoreFoundation
           ];
 
@@ -57,6 +57,14 @@
             platforms = platforms.darwin;
             license = licenses.mit;
           };
+        };
+
+        devShells.default = pkgs.mkShell {
+          buildInputs = [
+            (pkgs.lua5_4.withPackages (ps: [ self.packages.${system}.default ]))
+          ];
+
+          shellHook = ''zsh'';
         };
       }
     );
